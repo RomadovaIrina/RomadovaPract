@@ -5,7 +5,7 @@ import csv
 
 # Функция для считывания данных
 def read_data(path):
-    with open(path, encoding="utf-8") as file:
+    with open(path, encoding='utf-8') as file:
         data_to_load = json.load(file)
     return data_to_load
 
@@ -14,31 +14,39 @@ def read_data(path):
 def write_answer(final, filename):
     if len(filename.strip()) == 0:
         filename = "output.csv"
-    with open(filename, mode="w", newline="", encoding="utf-8") as file:
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         for feature in final:
             writer.writerow([feature])
-    print(f"Answer: {filename}")
+    print(f"Answer written in: {filename}")
 
 
 # Нахождение ответа для сочетаний заданной длины
+# Мы хотим проверить есть ли ответ для комбинаций такой длины
 def find_combination(res, combs, min_len):
     answer = tuple()
     found = 0
     for comb in combs:
         is_answer = True
+        # Пройдем по массиву res, чтобы определить
+        # Подходит ли данная комбинация под следующее условие:
+        # у любой пары элементов, хотя бы 1 параметр будет иметь разные значения
         for i in range(len(res)):
             for j in range(i):
                 found_diff = False
                 for feature in comb:
+                    # если значение параметра разное то разница найдена
                     if res[i][j][feature] == 1:
                         found_diff = True
                         break
+                # Если разницу не нашли, то данная комбинация это не ответ
                 if not found_diff:
                     is_answer = False
                     break
             if not is_answer:
                 break
+        # Если мы нашли ответ, длины меньшей чем имеющейся,
+        # то мы его обновим
         if is_answer:
             found = 1
             if len(comb) < min_len:
@@ -50,7 +58,8 @@ def find_combination(res, combs, min_len):
 
 # Функция для определения ращличия признаков в двух записях
 def compare(data, features):
-    res = [[[0] * len(features) for j in range(len(data))] for i in range(len(data))]
+    res = [[[0] * len(features)
+            for j in range(len(data))] for i in range(len(data))]
     for i, j in itertools.combinations(range(len(data)), 2):
         for ind, feature in enumerate(features):
             i_value = data[i].get(feature)
@@ -87,9 +96,7 @@ def main():
     ans_first = find_combination(res, first_comb, num)
     found_1 = ans_first[1]
     # Если не нашли ответ, то для (0, 1, ... first-1) ответа так же не будет
-    if found_1 == 0:
-        # Сдвигаем верхнюю и нижнюю границы, так как перебирать
-        # от 0 до first больше нет смысла
+    if (found_1 == 0):
         low_bound = first
         high_bound = second + 1
     # Если ответ найден, то пытаемся найти ответ короче first
@@ -112,5 +119,5 @@ def main():
     write_answer(final, output_name)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
