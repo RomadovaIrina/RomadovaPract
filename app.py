@@ -18,7 +18,7 @@ def write_answer(final, filename):
         writer = csv.writer(file)
         for feature in final:
             writer.writerow([feature])
-    print(f"Данные записаны в файл {filename}")
+    print(f"Answer: {filename}")
 
 
 # Нахождение ответа для сочетаний заданной длины
