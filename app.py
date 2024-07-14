@@ -5,7 +5,7 @@ import csv
 
 # Функция для считывания данных
 def read_data(path):
-    with open(path, encoding='utf-8') as file:
+    with open(path, encoding="utf-8") as file:
         data_to_load = json.load(file)
     return data_to_load
 
@@ -14,7 +14,7 @@ def read_data(path):
 def write_answer(final, filename):
     if len(filename.strip()) == 0:
         filename = "output.csv"
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+    with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         for feature in final:
             writer.writerow([feature])
@@ -50,8 +50,7 @@ def find_combination(res, combs, min_len):
 
 # Функция для определения ращличия признаков в двух записях
 def compare(data, features):
-    res = [[[0] * len(features)
-            for j in range(len(data))] for i in range(len(data))]
+    res = [[[0] * len(features) for j in range(len(data))] for i in range(len(data))]
     for i, j in itertools.combinations(range(len(data)), 2):
         for ind, feature in enumerate(features):
             i_value = data[i].get(feature)
@@ -88,12 +87,12 @@ def main():
     ans_first = find_combination(res, first_comb, num)
     found_1 = ans_first[1]
     # Если не нашли ответ, то для (0, 1, ... first-1) ответа так же не будет
-    if (found_1 == 0):
-        # Сдвигаем верхнюю и нижнюю границы, так как перебирать 
+    if found_1 == 0:
+        # Сдвигаем верхнюю и нижнюю границы, так как перебирать
         # от 0 до first больше нет смысла
         low_bound = first
         high_bound = second + 1
-    # Если ответ найден, то пытаемся найти ответ короче first    
+    # Если ответ найден, то пытаемся найти ответ короче first
     else:
         high_bound = first
 
@@ -113,5 +112,5 @@ def main():
     write_answer(final, output_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
