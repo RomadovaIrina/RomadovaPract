@@ -88,20 +88,31 @@ def main():
     min_len = len(features) + 1
     # задаем верхнюю и нижнюю границы для бинарного поиска
     low_bound, high_bound = 0, num + 1
-    first = num // 4
-    second = 3 * num // 4
+    first = 3 * num // 4
+    second = num // 4
     answer = tuple()
     # Проверяем: есть ли ответ длины first
     first_comb = itertools.combinations(iterate, first)
     ans_first = find_combination(res, first_comb, num)
+    second_comb = itertools.combinations(iterate, second)
+    ans_second = find_combination(res, second_comb, num)
     found_1 = ans_first[1]
-    # Если не нашли ответ, то для (0, 1, ... first-1) ответа так же не будет
-    if (found_1 == 0):
-        low_bound = first
-        high_bound = second + 1
-    # Если ответ найден, то пытаемся найти ответ короче first
-    else:
+    found_2 = ans_second[1]
+    # Если нашли ответ, для second то пытаемся найти короче
+    if (found_1 == 1 and found_2 == 1):
+        high_bound = second
+    # Если для first найден ответ, а для second нет, то
+    # ищем между ними более короткую комбинацию
+    elif (found_1 == 1 and found_2 == 0):
         high_bound = first
+        low_bound = second
+    # Ситуация с found_1=0 и found_2=1 невозможна, так как
+    # получается что был найден короткий ответ, а длинный нет, но
+    # нахождение короткого ответа гарантирует наличие более длинного
+    # Поэтому ситуация, если более длинный ответ также не найден:
+    # пытаемся найти еще длиннее
+    else:
+        low_bound = first
 
     # Используем бинарный поиск чтобы найти ответ.
     while high_bound - low_bound > 1:
