@@ -1,6 +1,7 @@
 import json
 import itertools
 import csv
+import sys
 
 
 # Функция для считывания данных
@@ -71,15 +72,9 @@ def compare(data, features):
     return res
 
 
-def main(json_input):
-    # Парсим JSON-строку
-    params = json.loads(json_input)
-    input_name = params['input_name']
-    output_name = params['output_name']
-
+def main(input_name, output_name):
     # Считываем данные
     data = read_data(input_name)
-
     # Заполняем признаки
     features = set()
     for i in data:
@@ -121,5 +116,7 @@ def main(json_input):
 
 
 if __name__ == '__main__':
-    json_input = input("Enter json string: ")
-    main(json_input)
+    if len(sys.argv) < 3:
+        print("Not enough arguments")
+    else:
+        main(sys.argv[1], sys.argv[2])
