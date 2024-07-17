@@ -1,7 +1,6 @@
 import json
 import itertools
 import csv
-import sys
 
 
 # Функция для считывания данных
@@ -72,10 +71,15 @@ def compare(data, features):
     return res
 
 
-def main(imput_name):
+def main(json_input):
+    # Парсим JSON-строку
+    params = json.loads(json_input)
+    input_name = params['input_name']
+    output_name = params['output_name']
+
     # Считываем данные
     data = read_data(input_name)
-    output_name = input()
+
     # Заполняем признаки
     features = set()
     for i in data:
@@ -83,42 +87,29 @@ def main(imput_name):
     features = list(features)
     res = compare(data, features)
     num = len(features)
-    # iterate- массив, для которого будут составляться сочетания разной длинны
     iterate = list(range(num))
     min_len = len(features) + 1
-    # задаем верхнюю и нижнюю границы для бинарного поиска
     low_bound, high_bound = 0, num + 1
     first = 3 * num // 4
     second = num // 4
     answer = tuple()
-    # Проверяем: есть ли ответ длины first
     first_comb = itertools.combinations(iterate, first)
     ans_first = find_combination(res, first_comb, num)
     second_comb = itertools.combinations(iterate, second)
     ans_second = find_combination(res, second_comb, num)
     found_1 = ans_first[1]
     found_2 = ans_second[1]
-    # Если нашли ответ, для second то пытаемся найти короче
     if (found_1 == 1 and found_2 == 1):
         high_bound = second
-    # Если для first найден ответ, а для second нет, то
-    # ищем между ними более короткую комбинацию
     elif (found_1 == 1 and found_2 == 0):
         high_bound = first
         low_bound = second
-    # Ситуация с found_1=0 и found_2=1 невозможна, так как
-    # получается что был найден короткий ответ, а длинный нет, но
-    # нахождение короткого ответа гарантирует наличие более длинного
-    # Поэтому ситуация, если более длинный ответ также не найден:
-    # пытаемся найти еще длиннее
     else:
         low_bound = first
 
-    # Используем бинарный поиск чтобы найти ответ.
     while high_bound - low_bound > 1:
         middle = (low_bound + high_bound) // 2
         combs = itertools.combinations(iterate, middle)
-        # Ищем ответ для сочетаний заданной длинны
         is_ans = find_combination(res, combs, min_len)
         if is_ans[1]:
             high_bound = middle
@@ -126,13 +117,9 @@ def main(imput_name):
         else:
             low_bound = middle
     final = [features[i] for i in answer]
-    # записываем ответ
     write_answer(final, output_name)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Использование: python script.py <имя входного файла>")
-        sys.exit(1)
-    input_name = sys.argv[1]
-    main(input_name)
+    json_input = input("Введите JSON-строку с параметрами: ")
+    main(json_input)
