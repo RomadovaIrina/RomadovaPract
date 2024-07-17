@@ -1,6 +1,7 @@
 import json
 import itertools
 import csv
+import sys
 
 
 # Функция для считывания данных
@@ -71,9 +72,8 @@ def compare(data, features):
     return res
 
 
-def main():
+def main(imput_name):
     # Считываем данные
-    input_name = input()
     data = read_data(input_name)
     output_name = input()
     # Заполняем признаки
@@ -131,4 +131,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) != 2:
+        print("Использование: python script.py <имя входного файла>")
+        sys.exit(1)
+    input_name = sys.argv[1]
+    main(input_name)
