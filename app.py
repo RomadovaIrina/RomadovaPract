@@ -121,5 +121,5 @@ def main(json_input):
 
 
 if __name__ == '__main__':
-    json_input = input("Введите JSON-строку с параметрами: ")
+    json_input = input("Enter json string: ")
     main(json_input)
