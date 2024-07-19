@@ -22,6 +22,7 @@
 
 ## Схема алгоритма:
 
-![diagram (5)](https://github.com/user-attachments/assets/aaa32da0-dd33-4c30-a95a-84daa95d0e26)
+![diagram (6)](https://github.com/user-attachments/assets/3839eca3-5411-4c73-b463-18f288e6d774)
+
 
 
