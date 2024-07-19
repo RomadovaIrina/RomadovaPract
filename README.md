@@ -21,8 +21,10 @@
 5. Далее происходит запись в CSV файл по пути, который указывается при запуске.
 
 ## Схема алгоритма:
+![diagram (7)](https://github.com/user-attachments/assets/db35d399-16ce-4d2c-a13e-dd5c763ffa5c)
 
-![diagram (6)](https://github.com/user-attachments/assets/3839eca3-5411-4c73-b463-18f288e6d774)
+
+
 
 
 
